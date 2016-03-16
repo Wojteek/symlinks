@@ -6,7 +6,8 @@ var lib = require('../index.js'),
 	path = require('path'),
 	fs = require('fs'),
 	currentDir = process.cwd(),
-	symlinksConf = path.resolve(currentDir, 'symlinks.json');
+	configDir = process.argv[2],
+	symlinksConf = path.resolve(currentDir, void 0 !== configDir ? configDir : '', 'symlinks.json');
 
 fs.readFile(symlinksConf, 'utf8', function (error, config) {
 	if (error) {
