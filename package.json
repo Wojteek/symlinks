@@ -1,6 +1,6 @@
 {
-  "name": "symlinks",
-  "version": "0.0.2",
+  "name": "symlinks_generator",
+  "version": "0.0.3",
   "description": "Easy way for create symlinks",
   "main": "index.js",
   "dependencies": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wojteek/symlinks.git"
+    "url": "git+https://github.com/Wojteek/symlinks_generator.git"
   },
   "keywords": [
     "symlink",
@@ -24,7 +24,7 @@
   "author": "Wojtek Lewandowski <wojtek@lwd.ski> (http://lwd.ski)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Wojteek/symlinks/issues"
+    "url": "https://github.com/Wojteek/symlinks_generator/issues"
   },
-  "homepage": "https://github.com/Wojteek/symlinks#readme"
+  "homepage": "https://github.com/Wojteek/symlinks_generator#readme"
 }
