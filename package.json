@@ -1,6 +1,6 @@
 {
   "name": "symlinks_generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Easy way for create symlinks",
   "main": "index.js",
   "dependencies": {
