@@ -7,19 +7,63 @@ var extend = require('extend'),
 	fs = require('fs'),
 	async = require('async'),
 	path = require('path'),
-	chalk = require('chalk');
+	chalk = require('chalk'),
+	glob = require('glob');
 
 module.exports = function () {
 	var configs = {},
 		symlinks = [],
 		settings = {};
 
-	var prepareConfigsObject = function () {
+	var clearDirs = function () {
 		var symlinksConfigs = settings['symlinks_configs'];
 
 		if ('object' === typeof symlinksConfigs && 0 === symlinksConfigs.length) {
-			console.error(chalk.red('Symlinks configs list is empty!'));
+			throw 'Symlinks configs list is empty!';
 		}
+
+		async.waterfall([
+			function (callback) {
+				var dirs = [];
+				async.map(symlinksConfigs, function (file) {
+					dirs.push(path.dirname(file));
+				});
+
+				callback(null, dirs);
+			},
+			function (dirs, callback) {
+				var filesArray = [];
+
+				async.map(dirs, function (dir, call) {
+					var files = glob.sync(dir + '/**/*.js');
+
+					files.forEach(function (file) {
+						filesArray.push(file);
+					});
+
+					call(filesArray);
+				});
+
+				callback(null, filesArray);
+			},
+			function (files, callback) {
+				async.map(files, fs.unlink);
+
+				callback(null);
+			}
+		], function () {
+			prepareConfigsObject();
+		});
+	};
+
+	var prepareConfigsObject = function (error) {
+		if (error) {
+			console.error(chalk.red(error.message));
+
+			return false;
+		}
+
+		var symlinksConfigs = settings['symlinks_configs'];
 
 		async.map(symlinksConfigs, function (file, callback) {
 			fs.readFile(file, 'utf8', function (error, data) {
@@ -103,7 +147,7 @@ module.exports = function () {
 	return {
 		init: function (configs) {
 			setSettings(configs);
-			prepareConfigsObject();
+			clearDirs();
 		}
 	};
 };
